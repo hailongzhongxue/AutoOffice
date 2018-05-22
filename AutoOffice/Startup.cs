@@ -61,7 +61,7 @@ namespace AutoOffice
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=HumanResourceManage}/{id?}");
             });
         }
     }

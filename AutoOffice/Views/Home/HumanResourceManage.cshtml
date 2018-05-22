@@ -1,0 +1,31 @@
+﻿@model AutoOffice.Models.HumanResourceManageModel
+@{
+    ViewData["Title"] = "Human Resource Manage";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Employees</h2>
+        <div id="newspaper">
+            <ul>
+                @foreach (var item in Model.HumanManages)
+                {
+                <li>
+                    <a asp-controller="Home"
+                       asp-action="ProductDetail"
+                       asp-route-id="@item.ID">
+                        @item.UserName : @item.Job
+                    </a>
+                    <form asp-action="HumanResourceManageSetJobTo" method="get">
+                        <input name="job" placeholder="Job ..." />
+                        <input name="userName" value="@item.UserName" hidden />
+                        <input type="submit" />
+                    </form>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
