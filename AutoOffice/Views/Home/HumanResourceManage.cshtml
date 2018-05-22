@@ -4,28 +4,49 @@
 }
 
 <h2>@ViewData["Title"]</h2>
-
-<div class="row">
-    <div class="col-md-12">
-        <h2>Employees</h2>
-        <div id="newspaper">
-            <ul>
-                @foreach (var item in Model.HumanManages)
-                {
-                <li>
-                    <a asp-controller="Home"
-                       asp-action="ProductDetail"
-                       asp-route-id="@item.ID">
-                        @item.UserName : @item.Job
-                    </a>
-                    <form asp-action="HumanResourceManageSetJobTo" method="get">
-                        <input name="job" placeholder="Job ..." />
-                        <input name="userName" value="@item.UserName" hidden />
+<br/>
+<div>
+    <table>
+        <tr>
+            <th>
+                Email
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Department
+            </th>
+            <th>
+                Job
+            </th>
+        </tr>
+        @foreach (var item in Model.HumanManages)
+        {
+            if (item.Email == "root@root.com")
+            {
+                continue;
+            }
+            <tr>
+                <form id="form" asp-action="HumanResourceManageSet" method="post">
+                    <td>
+                        <label for="form">@item.Email</label>
+                    </td>
+                    <input name="email" value="@item.Email" hidden />
+                    <td>
+                        <input id="name" name="name" value="@item.Name" />
+                    </td>
+                    <td>
+                        <input id="department" name="department" value="@item.Department" />
+                    </td>
+                    <td>
+                        <input id="job" name="job" value="@item.Job" />
+                    </td>
+                    <td>
                         <input type="submit" />
-                    </form>
-                </li>
-                }
-            </ul>
-        </div>
-    </div>
+                    </td>
+                </form>
+            </tr>
+        }
+    </table>
 </div>

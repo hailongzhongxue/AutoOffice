@@ -47,14 +47,17 @@ namespace AutoOffice.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        // MARK: - 人事管理 HumanResourceManage
         public async Task<IActionResult> HumanResourceManage()
         {
+            // 验证是否登陆
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
             var username = user.UserName;
+            // 验证是否登为管理用户
             if (username != "root@root.com")
             {
                 throw new ApplicationException($"You don't have this power, user {username}.");
@@ -68,26 +71,65 @@ namespace AutoOffice.Controllers
             return View(model);
         }
         
-        public async Task<IActionResult> HumanResourceManageSetJobTo(string userName, string job)
+        [HttpPost]
+        public async Task<IActionResult> HumanResourceManageSet(string email, string name, string department, string job)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
             var username = user.UserName;
             if (username != "root@root.com")
             {
                 throw new ApplicationException($"You don't have this power, user {username}.");
             }
 
-            HumanManage humanManageToUpdate = db.HumanManages.First(p => p.UserName == userName);
+            HumanManage humanManageToUpdate = db.HumanManages.First(p => p.Email == email);
+            humanManageToUpdate.Name = name;
             humanManageToUpdate.Job = job;
+            humanManageToUpdate.Department = department;
             db.SaveChanges();
 
             return View();
         }
-        
+
+        // MARK: - 站内短信 Message 
+        public async Task<IActionResult> Message()
+        {
+            // 验证是否登陆
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var model = new MessageModel
+            {
+                Messages = db.Messages.ToArray()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MessageSend(string toEmail, string text)
+        {
+            // 验证是否登陆
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            Message message = new Message();
+            message.FromEmail = user.UserName;
+            message.ToEmail = toEmail;
+            message.Text = text;
+            message.Time = DateTime.Now;
+            db.Messages.Add(message);
+            db.SaveChanges();
+
+            return View();
+        }
     }
 }

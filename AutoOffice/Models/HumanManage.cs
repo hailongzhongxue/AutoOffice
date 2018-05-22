@@ -5,8 +5,9 @@ namespace AutoOffice.Models
     public class HumanManage
     {
         public string ID { get; set; }
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
+        public string Email { get; set; }
+        [StringLength(50)]
+        public string Name { get; set; }
         [StringLength(50)]
         public string Department { get; set; }
         [StringLength(50)]

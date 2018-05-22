@@ -1,0 +1,16 @@
+﻿@model AutoOffice.Models.MessageModel
+@{
+    ViewData["Title"] = "Message";
+}
+
+<h2>Message</h2>
+
+<div>
+    @foreach (var item in Model.Messages)
+    {
+        <p>@item.FromEmail</p>
+        <p>@item.ToEmail</p>
+        <p>@item.Text</p>
+        <p>@item.Time</p>
+    }
+</div>

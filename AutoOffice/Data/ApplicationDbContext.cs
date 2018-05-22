@@ -11,6 +11,7 @@ namespace AutoOffice.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<HumanManage> HumanManages { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -22,6 +23,7 @@ namespace AutoOffice.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             builder.Entity<HumanManage>().ToTable("HumanManage");
+            builder.Entity<Message>().ToTable("Message");
             // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
